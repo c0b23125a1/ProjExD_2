@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -24,6 +25,36 @@ def check_bound(obj_rct: pg.Rect)  ->  tuple[bool, bool]:  # pg.Rect型だと定
     return yoko, tate
 
 
+def game_over(screen:pg.Surface)->None:
+    go_img = pg.Surface((WIDTH, HEIGHT))
+    pg.draw.rect(go_img, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))
+    go_img.set_alpha(150)
+    go_rct = go_img.get_rect()
+    screen.blit(go_img, go_rct)
+
+    fonto = pg.font.Font(None, 80)
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+    txt_rct = txt.get_rect()
+    txt_rct.centerx = WIDTH//2
+    txt_rct.centery = HEIGHT//2
+    screen.blit(txt, txt_rct)
+
+    nakuton = pg.image.load("fig/8.png")
+    screen.blit(nakuton, [350, 300])
+    screen.blit(nakuton, [710, 300])
+    pg.display.update()
+    time.sleep(5)
+
+
+# def zouka():
+#     accs = [a for a in range(1, 11)]
+
+#     for r in range(1, 11):
+#         bb_img = pg.Surface((20*r, 20*r))
+#         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+
+#         avx = 
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -46,6 +77,7 @@ def main():
                 return
         screen.blit(bg_img, [0, 0])
         if kk_rct.colliderect(bb_rct):  # こうかとんと爆弾が重なった場合
+            game_over(screen)
             return 
 
         key_lst = pg.key.get_pressed()
