@@ -46,14 +46,17 @@ def game_over(screen:pg.Surface)->None:
     time.sleep(5)
 
 
-# def zouka():
-#     accs = [a for a in range(1, 11)]
+def zouka():
+    """
+    途中
+    """
+    accs = [a for a in range(1, 11)]
 
-#     for r in range(1, 11):
-#         bb_img = pg.Surface((20*r, 20*r))
-#         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
-
-#         avx = 
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+    
+    return accs, bb_img
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -62,9 +65,11 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 300, 200
-    bb_image = pg.Surface((20, 20))
+    # bb_image = pg.Surface((20, 20))
+    # bb_image.set_colorkey((0, 0, 0))
+    # pg.draw.circle(bb_image, (255,0,0), (10,10), 10)  # 赤、ｘ１０ｙ１０、半径１０
+    bb_image = zouka()[1]
     bb_image.set_colorkey((0, 0, 0))
-    pg.draw.circle(bb_image, (255,0,0), (10,10), 10)  # 赤、ｘ１０ｙ１０、半径１０
     bb_rct = bb_image.get_rect()
     bb_rct.centerx = random.randint(0, WIDTH)
     bb_rct.centery = random.randint(0, HEIGHT)
@@ -97,6 +102,10 @@ def main():
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+
+        # avx = vx*bb_accs[min(tmr//500, 9)]  # 爆弾速さ頻度
+        # avy = vy*bb_accs[min(tmr//500, 9)]
+        bb_img = bb_img[min(tmr//500, 9)]
         bb_rct.move_ip(vx, vy)
         yoko, tate = check_bound(bb_rct)
         if not yoko:
